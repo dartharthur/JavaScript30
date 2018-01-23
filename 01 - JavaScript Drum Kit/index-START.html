@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>JS Drum Kit</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-
-
   <div class="keys">
     <div data-key="65" class="key">
       <kbd>A</kbd>
@@ -57,10 +57,26 @@
   <audio data-key="75" src="sounds/tom.wav"></audio>
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
-<script>
+  <script>
+    // document.addEventListener('keydown', e => console.log(e.key));
+    const soundLibrary = {};
 
-</script>
+    const playSound = function (key) {
+      console.log(key);
+      soundLibrary[key].play()
+    }
 
+    Array.from(document.getElementsByTagName('audio')).forEach(sound =>
+      soundLibrary[sound.dataset.key] = sound
+    )
 
+    Array.from(document.getElementsByClassName('key')).forEach(key => {
+      key.onclick = function (e) {
+        playSound(key.dataset.key)
+      };
+    });
+
+  </script>
 </body>
+
 </html>
