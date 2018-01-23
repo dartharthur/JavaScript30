@@ -58,23 +58,19 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
   <script>
-    // document.addEventListener('keydown', e => console.log(e.key));
-    const soundLibrary = {};
+    const jukeBox = {};
 
-    const playSound = function (key) {
-      console.log(key);
-      soundLibrary[key].play()
-    }
+    const playSound = key => jukeBox[key] && jukeBox[key].play();
+
+    document.addEventListener('keydown', e => playSound(e.keyCode));
 
     Array.from(document.getElementsByTagName('audio')).forEach(sound =>
-      soundLibrary[sound.dataset.key] = sound
-    )
+      jukeBox[sound.dataset.key] = sound
+    );
 
-    Array.from(document.getElementsByClassName('key')).forEach(key => {
-      key.onclick = function (e) {
-        playSound(key.dataset.key)
-      };
-    });
+    Array.from(document.getElementsByClassName('key')).forEach(key =>
+      key.onclick = e => playSound(key.dataset.key)
+    );
 
   </script>
 </body>
