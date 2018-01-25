@@ -61,11 +61,19 @@
     const jukeBox = {};
     const keyBoard = {};
 
-    const playSound = key => jukeBox[key] && jukeBox[key].play();
+    const playSound = key => {
+      if (jukeBox[key]) {
+        jukeBox[key].currentTime = 0;
+        jukeBox[key].play()
+      }
+    };
 
-    const removeTransition = e => {
+    const removeTransition = function (e) {
       if (e.propertyName !== 'transform') return;
-      e.target.classList.remove('playing');
+      this.classList.remove('playing');
+
+      // alternatively:
+      // e.target.classList.remove('playing');
     }
 
     document.addEventListener('keydown', e => {
@@ -83,6 +91,7 @@
         key.classList.add('playing');
         playSound(key.dataset.key);
       }
+      // for some reason this event is firing twice (maybe spend another 15 min)
       key.addEventListener('transitionend', removeTransition);
     });
 
