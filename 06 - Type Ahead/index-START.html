@@ -18,7 +18,39 @@
   </form>
   <script>
     const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+    const cities = [];
 
+    fetch(endpoint)
+      .then(res => res.json())
+      .then(data => cities.push(...data));
+
+    const filterCities = (cities, query) => cities.filter(({ city, state }) => {
+      const regex = new RegExp(query, 'gi');
+      return city.match(regex) || state.match(regex)
+    });
+
+    const numberWithCommas = (x) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+    const displayMatches = (e) => {
+      const matches = filterCities(cities, e.target.value);
+      const html = matches.map(({ city, state, population }) => {
+        const regex = new RegExp(e.target.value, 'gi');
+        const cityName = city.replace(regex, `<span class="hl">${e.target.value}</span>`);
+        const stateName = city.replace(regex, `<span class="hl">${e.target.value}</span>`);
+        return `
+          <li>
+            <span class="name">${stateName}, ${stateName}</span>
+            <span class="population">${numberWithCommas(population)}</span>
+          </li>
+        `;
+      }).join('');
+      suggestions.innerHTML = html;
+    };
+
+    const input = document.querySelector('input.search');
+    const suggestions = document.querySelector('ul.suggestions');
+
+    input.addEventListener('keyup', displayMatches);
   </script>
 </body>
 
