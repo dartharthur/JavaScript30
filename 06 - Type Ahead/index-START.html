@@ -26,7 +26,7 @@
 
     const filterCities = (cities, query) => cities.filter(({ city, state }) => {
       const regex = new RegExp(query, 'gi');
-      return city.match(regex) || state.match(regex)
+      return city.match(regex) || state.match(regex);
     });
 
     const numberWithCommas = (x) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
